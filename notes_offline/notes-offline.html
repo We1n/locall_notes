@@ -1,0 +1,745 @@
+<!--
+  Single-file version of Local Notes Web App
+  Просто откройте этот файл в браузере. Все данные сохраняются в localStorage, работает оффлайн.
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заметки и промпты (один файл)</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+/* --- ВСТАВКА АКТУАЛЬНОГО style.css --- */
+/* Светлая тема (по умолчанию) */
+body {
+  background-color: #f9fafb;
+  color: #1f2937;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+.bg-white, .bg-gray-50 {
+  background-color: #fff !important;
+  color: #1f2937 !important;
+}
+
+/* Карточки */
+.note-card {
+  border-radius: 1.25rem; /* rounded-2xl */
+  box-shadow: 0 4px 24px 0 rgba(31,41,55,0.06), 0 1.5px 3px 0 rgba(31,41,55,0.04);
+  background: #fff;
+  padding: 1.25rem;
+  min-height: 170px;
+  transition: box-shadow 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(59,130,246,0.12), 0 3px 10px 0 rgba(31,41,55,0.07);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Sidebar */
+.sidebar {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 8px 0 rgba(31,41,55,0.06);
+  padding: 1.5rem 1rem;
+  min-width: 220px;
+  transition: background 0.3s;
+  border: 1px solid #e5e7eb;
+}
+.sidebar-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 1em;
+  margin: 2px 0 2px 0;
+  cursor: pointer;
+  color: #2563eb;
+  background: transparent;
+  transition: background 0.18s, color 0.18s;
+}
+.sidebar-tag.selected {
+  background: #3b82f6;
+  color: #fff;
+}
+.sidebar-tag:hover {
+  background: #e0e7ef;
+  color: #1d4ed8;
+}
+body.dark .sidebar {
+  background: #1e293b;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+}
+body.dark .sidebar-tag {
+  color: #60a5fa;
+}
+body.dark .sidebar-tag.selected {
+  background: #60a5fa;
+  color: #1e293b;
+}
+body.dark .sidebar-tag:hover {
+  background: #334155;
+  color: #60a5fa;
+}
+
+/* Тёмная тема */
+body.dark {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+body.dark .bg-white,
+body.dark .bg-gray-50 {
+  background-color: #1e293b !important;
+  color: #e5e7eb !important;
+}
+body.dark .note-card {
+  background: #1e293b;
+  color: #e5e7eb;
+  box-shadow: 0 4px 24px 0 rgba(96,165,250,0.08), 0 1.5px 3px 0 rgba(16,185,129,0.05);
+}
+body.dark .note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(96,165,250,0.18), 0 3px 10px 0 rgba(52,211,153,0.08);
+}
+body.dark .sidebar {
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+/* Плавное переключение тем */
+body, .note-card, .sidebar {
+  transition: background 0.3s, color 0.3s, box-shadow 0.2s;
+}
+
+/* Chips */
+.chip {
+  display: inline-block;
+  padding: 0.25em 0.8em;
+  border-radius: 999px;
+  font-size: 0.92em;
+  font-weight: 500;
+  margin-right: 0.25em;
+  margin-bottom: 0.25em;
+  background: #f3f4f6;
+  color: #2563eb;
+  transition: background 0.2s, color 0.2s;
+}
+.chip-blue {
+  background: #2563eb;
+  color: #fff;
+}
+.chip-green {
+  background: #10b981;
+  color: #fff;
+}
+body.dark .chip {
+  background: #334155;
+  color: #60a5fa;
+}
+body.dark .chip-blue {
+  background: #60a5fa;
+  color: #1e293b;
+}
+body.dark .chip-green {
+  background: #34d399;
+  color: #1e293b;
+}
+
+.note-card .edit-note-btn, .note-card .delete-note-btn {
+  opacity: 0;
+  pointer-events: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 2px;
+  transition: opacity 0.18s;
+}
+.note-card.group:hover .edit-note-btn,
+.note-card.group:hover .delete-note-btn,
+.note-card:hover .edit-note-btn,
+.note-card:hover .delete-note-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.note-card .edit-note-btn svg,
+.note-card .delete-note-btn svg {
+  vertical-align: middle;
+}
+
+#notes-list {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  #notes-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  #notes-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Дополнительные стили для плавной анимации модального окна и мелких деталей */
+
+#modal {
+  transition: opacity 0.2s;
+  background: rgba(0,0,0,0.35);
+}
+
+/* --- КОНЕЦ style.css --- */
+  </style>
+
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6">
+    <div class="flex justify-end mb-2 gap-2">
+      <button id="import-notes-btn" class="px-2 py-1 rounded bg-blue-200 hover:bg-blue-300 text-sm" title="Импортировать заметки">Импорт</button>
+      <input type="file" id="import-notes-input" accept=".json" style="display:none">
+      <button id="export-notes-btn" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm" title="Экспортировать заметки">Экспорт</button>
+      <button id="toggle-theme" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-xl" title="Переключить тему">🌙</button>
+    </div>
+    <h1 class="text-3xl font-bold mb-6 text-center">Мои заметки и промпты</h1>
+    <div class="flex flex-row gap-6">
+      <!-- Sidebar с тегами и фильтрами -->
+      <aside class="sidebar min-w-[220px]">
+        <div id="sidebar-tags"></div>
+      </aside>
+      <!-- Основная часть -->
+      <main class="flex-1 bg-white rounded shadow p-4">
+        <div class="flex flex-col sm:flex-row items-center mb-4 gap-2">
+          <button id="add-note-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Новая заметка</button>
+          <button id="select-notes-dir-btn" class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 ml-2">Выбрать папку для заметок</button>
+          <input id="search" type="text" placeholder="Поиск..." class="border rounded px-3 py-1 flex-1">
+          <label for="sort-notes" class="ml-2">Сортировка:</label>
+          <select id="sort-notes" class="border rounded px-2 py-1">
+            <option value="date_desc">Дата (новые)</option>
+            <option value="date_asc">Дата (старые)</option>
+            <option value="title_asc">Алфавит (A-Я)</option>
+            <option value="title_desc">Алфавит (Я-A)</option>
+            <option value="tags_desc">Больше тегов</option>
+            <option value="tags_asc">Меньше тегов</option>
+            <option value="custom">Ручной порядок (drag-and-drop)</option>
+          </select>
+        </div>
+        <div id="notes-list" class="grid gap-6"></div>
+      </main>
+    </div>
+  </div>
+  <div id="selected-dir-path" class="text-xs text-gray-500 mt-1 ml-auto mr-2">Папка не выбрана</div>
+
+  <!-- Модальное окно для добавления/редактирования заметки -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden" style="transition:opacity 0.2s;">
+    <div class="bg-white dark:bg-[#1e293b] p-7 rounded-2xl shadow-xl w-full max-w-lg relative flex flex-col gap-2 animate-modal" style="box-shadow: 0 8px 40px 0 rgba(31,41,55,0.18); transition:transform 0.18s,opacity 0.18s;">
+      <button id="close-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+      <h2 class="text-xl font-bold mb-4 text-center" id="modal-title">Новая заметка</h2>
+      <form id="note-form" class="flex flex-col gap-3">
+  <input type="hidden" id="note-id">
+  <input id="note-title" type="text" placeholder="Заголовок" class="border rounded px-3 py-2 text-base" required>
+  <input id="note-category" type="text" placeholder="Категория" class="border rounded px-3 py-2 text-base">
+  <input id="note-tags" type="text" placeholder="Теги (через запятую)" class="border rounded px-3 py-2 text-base" list="tags-datalist">
+  <datalist id="tags-datalist"></datalist>
+  <textarea id="note-content" rows="4" placeholder="Текст заметки..." class="border rounded px-3 py-2 text-base" required></textarea>
+  <label class="block">
+    <span>Картинка (необязательно):</span>
+    <input id="note-image" type="file" accept="image/*" class="mt-1">
+  </label>
+  <label class="block mt-2">
+    <span>Файлы (PDF, TXT):</span>
+    <input id="note-files" type="file" accept=".pdf,.txt" multiple class="mt-1">
+  </label>
+  <div class="flex gap-2 mt-5">
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Сохранить</button>
+    <button type="button" id="delete-note-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hidden">Удалить</button>
+    <button type="button" id="cancel-modal" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Отмена</button>
+  </div>
+</form>
+    </div>
+  </div>
+  <script>
+// ====== Self-contained JS for offline notes app (modern UI) =====
+const LS_KEY = 'notes-v2';
+const LS_ORDER = 'notes-order-v2';
+const LS_THEME = 'notes-theme-v2';
+let notes = [];
+let customOrder = [];
+let selectedTags = [];
+let search = '';
+let sort = 'date_desc';
+let editingId = null;
+let isDark = false;
+
+function saveNotes() {
+  localStorage.setItem(LS_KEY, JSON.stringify(notes));
+}
+function loadNotes() {
+  const raw = localStorage.getItem(LS_KEY);
+  notes = raw ? JSON.parse(raw) : [];
+}
+function saveOrder() {
+  localStorage.setItem(LS_ORDER, JSON.stringify(customOrder));
+}
+function loadOrder() {
+  const raw = localStorage.getItem(LS_ORDER);
+  customOrder = raw ? JSON.parse(raw) : [];
+}
+function saveTheme() {
+  localStorage.setItem(LS_THEME, isDark ? 'dark' : 'light');
+}
+function loadTheme() {
+  isDark = localStorage.getItem(LS_THEME) === 'dark';
+  document.body.classList.toggle('dark', isDark);
+  document.getElementById('toggle-theme').textContent = isDark ? '☀️' : '🌙';
+}
+
+function getAllTags() {
+  const tagSet = new Set();
+  notes.forEach(n => (n.tags||[]).forEach(t => tagSet.add(t)));
+  return Array.from(tagSet).sort();
+}
+
+function renderSidebar() {
+  const tags = getAllTags();
+  const sidebar = document.getElementById('sidebar-tags');
+  sidebar.innerHTML = tags.map(tag =>
+    `<span class="sidebar-tag${selectedTags.includes(tag)?' selected':''}" data-tag="${tag}">${tag}</span>`
+  ).join('');
+  sidebar.querySelectorAll('.sidebar-tag').forEach(el => {
+    el.onclick = () => {
+      if (selectedTags.includes(el.dataset.tag)) {
+        selectedTags = selectedTags.filter(t => t!==el.dataset.tag);
+      } else {
+        selectedTags.push(el.dataset.tag);
+      }
+      renderSidebar();
+      renderNotes();
+    };
+  });
+}
+
+function renderNotes() {
+  let filtered = notes;
+  // Фильтрация по тегам
+  if (selectedTags.length > 0) {
+    filtered = filtered.filter(n => (n.tags||[]).some(tag => selectedTags.includes(tag)));
+  }
+  // Поиск
+  if (search) {
+    const s = search.toLowerCase();
+    filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(s) || (n.content||'').toLowerCase().includes(s));
+  }
+  // Сортировка
+  let sorted = [...filtered];
+  if (sort === 'custom') {
+    let order = customOrder;
+    if (!order.length) order = sorted.map(n=>n.id);
+    sorted.sort((a,b) => order.indexOf(a.id) - order.indexOf(b.id));
+  } else if (sort === 'date_desc') {
+    sorted.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  } else if (sort === 'date_asc') {
+    sorted.sort((a,b) => (a.date||'').localeCompare(b.date||''));
+  } else if (sort === 'title_asc') {
+    sorted.sort((a,b) => (a.title||'').localeCompare(b.title||''));
+  } else if (sort === 'title_desc') {
+    sorted.sort((a,b) => (b.title||'').localeCompare(a.title||''));
+  } else if (sort === 'tags_desc') {
+    sorted.sort((a,b) => ((b.tags?.length)||0)-((a.tags?.length)||0));
+  } else if (sort === 'tags_asc') {
+    sorted.sort((a,b) => ((a.tags?.length)||0)-((b.tags?.length)||0));
+  }
+  // Рендер
+  const notesList = document.getElementById('notes-list');
+  notesList.innerHTML = sorted.map(note => {
+    const drag = sort==='custom' ? 'draggable="true"' : '';
+    return `<div class="border rounded p-3 bg-gray-50 shadow-sm note-card" data-id="${note.id}" ${drag}>
+      <div class="flex items-center justify-between mb-2">
+        <div class="font-bold text-lg">${note.title||''}</div>
+        <button class="text-blue-600 hover:underline text-sm edit-btn" data-id="${note.id}">Редактировать</button>
+      </div>
+      <div class="text-sm text-gray-500 mb-1">${note.category||''}</div>
+      <div class="flex flex-wrap gap-1 mb-2">
+        ${(note.tags||[]).map(tag => `<span class="px-2 py-0.5 rounded text-xs bg-blue-100 text-blue-800">${tag}</span>`).join('')}
+      </div>
+      <div class="mb-2">${(note.content||'').replace(/\n/g,'<br>')}</div>
+      ${note.image ? `<div class="mb-2"><img src="${note.image}" alt="img" class="max-h-40 rounded"></div>` : ''}
+      ${note.attachments && note.attachments.length ? `
+        <div class="mt-2">
+          <div class="font-semibold text-xs mb-1">Вложения:</div>
+          <ul class="space-y-1">
+            ${note.attachments.map(f => `
+              <li>
+                <a href="${f.data}" download="${f.name}" target="_blank" class="inline-flex items-center gap-1 text-blue-700 hover:underline">
+                  ${f.type.includes('pdf') ? '📄' : f.type.includes('text') ? '📄' : '📎'}
+                  ${f.name}
+                </a>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : ''}
+    </div>`;
+  }).join('') || '<div class="text-gray-400">Нет заметок</div>';
+  // Drag-and-drop
+  if (sort==='custom') {
+    let dragSrcId = null;
+    notesList.querySelectorAll('.note-card').forEach(card => {
+      card.ondragstart = e => { dragSrcId = card.dataset.id; card.classList.add('ring', 'ring-blue-300'); };
+      card.ondragend = e => { dragSrcId = null; card.classList.remove('ring', 'ring-blue-300'); };
+      card.ondragover = e => { e.preventDefault(); card.classList.add('ring', 'ring-blue-300'); };
+      card.ondragleave = e => { card.classList.remove('ring', 'ring-blue-300'); };
+      card.ondrop = e => {
+        e.preventDefault();
+        card.classList.remove('ring', 'ring-blue-300');
+        const tgtId = card.dataset.id;
+        if (dragSrcId && tgtId && dragSrcId!==tgtId) {
+          let order = customOrder;
+          if (!order.length) order = sorted.map(n=>n.id);
+          const from = order.indexOf(dragSrcId);
+          const to = order.indexOf(tgtId);
+          if (from>-1 && to>-1) {
+            order.splice(to, 0, order.splice(from, 1)[0]);
+            customOrder = order;
+            saveOrder();
+            renderNotes();
+          }
+        }
+      };
+    });
+  }
+  // Кнопки редактирования
+  notesList.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.onclick = () => openEditModal(btn.dataset.id);
+  });
+}
+
+function renderTagsAndCategories() {
+  // Собрать все теги и категории из заметок
+  const tags = new Set();
+  const cats = new Set();
+  notes.forEach(note => {
+    (note.tags||[]).forEach(t=>tags.add(t));
+    if (note.category) cats.add(note.category);
+  });
+  window._allTags = Array.from(tags).sort();
+  window._allCategories = Array.from(cats).sort();
+}
+
+function openModal() {
+  document.getElementById('modal').classList.remove('hidden');
+  document.getElementById('modal-title').textContent = 'Новая заметка';
+  document.getElementById('note-form').reset();
+  document.getElementById('note-id').value = '';
+  document.getElementById('note-category').value = '';
+  document.getElementById('note-image').value = '';
+  document.getElementById('note-files').value = '';
+  const delBtn = document.getElementById('delete-note-btn');
+  if (delBtn) delBtn.classList.add('hidden');
+}
+
+function openEditModal(noteId) {
+  const note = notes.find(n => n.id === noteId);
+  if (!note) return;
+  document.getElementById('modal').classList.remove('hidden');
+  document.getElementById('modal-title').textContent = 'Редактировать заметку';
+  document.getElementById('note-id').value = note.id;
+  document.getElementById('note-title').value = note.title;
+  document.getElementById('note-category').value = note.category || '';
+  document.getElementById('note-tags').value = note.tags ? note.tags.join(', ') : '';
+  document.getElementById('note-content').value = note.content;
+  const delBtn = document.getElementById('delete-note-btn');
+  if (delBtn) delBtn.classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+}
+
+async function loadData() {
+  loadNotes();
+  renderTagsAndCategories();
+  renderSidebar();
+  renderNotes();
+  // Автодополнение тегов
+  const datalist = document.getElementById('tags-datalist');
+  if (datalist && window._allTags) {
+    datalist.innerHTML = window._allTags.map(tag => `<option value="${tag}">`).join('');
+  }
+}
+
+// Функция для проверки и запроса разрешений на доступ к директории
+async function verifyPermission(directoryHandle, readWrite) {
+  const options = {};
+  if (readWrite) {
+    options.mode = 'readwrite';
+  }
+  if ((await directoryHandle.queryPermission(options)) === 'granted') {
+    return true;
+  }
+  if ((await directoryHandle.requestPermission(options)) === 'granted') {
+    return true;
+  }
+  return false;
+}
+
+// Функция для выбора директории пользователем
+async function selectNotesDirectory() {
+  try {
+    const handle = await window.showDirectoryPicker();
+    if (handle) {
+      if (await verifyPermission(handle, true)) {
+        notesDirectoryHandle = handle; // Сохраняем хэндл
+        document.getElementById('selected-dir-path').textContent = `Выбрана папка: ${notesDirectoryHandle.name}`;
+        console.log("Directory selected:", notesDirectoryHandle.name);
+        // Демонстрационная логика: очистка текущих заметок и сообщение
+        notes = [];
+        customOrder = [];
+        saveNotes(); // Очищаем localStorage тоже, если он использовался
+        saveOrder();
+        renderTagsAndCategories();
+        renderSidebar();
+        renderNotes();
+        alert(`ДЕМО: Папка "${notesDirectoryHandle.name}" выбрана. Загрузка и сохранение в папку пока не реализованы. Текущий список заметок очищен.`);
+      } else {
+        notesDirectoryHandle = null;
+        document.getElementById('selected-dir-path').textContent = 'Разрешение на доступ к папке не получено.';
+        alert('Разрешение на доступ к папке не получено.');
+      }
+    }
+  } catch (err) {
+    console.error('Ошибка выбора директории:', err);
+    if (err.name !== 'AbortError') { // AbortError означает, что пользователь отменил выбор
+        alert(`Ошибка выбора папки: ${err.message}`);
+    }
+    document.getElementById('selected-dir-path').textContent = 'Ошибка выбора папки или отменено пользователем.';
+  }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+  loadData(); // Загружаем данные (из localStorage по умолчанию)
+  renderSidebar();
+  renderNotes();
+
+  // Обработчики событий для существующих кнопок
+  const addNoteBtn = document.getElementById('add-note-btn');
+  if (addNoteBtn) {
+    addNoteBtn.onclick = openModal;
+  }
+  
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.oninput = e => {
+      search = e.target.value;
+      renderNotes();
+    };
+  }
+
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.onchange = e => {
+      sort = e.target.value;
+      renderNotes();
+    };
+  }
+
+  const importBtn = document.getElementById('import-notes-btn');
+  const importInput = document.getElementById('import-notes-input');
+  if (importBtn && importInput) {
+    importBtn.onclick = () => importInput.click();
+    importInput.onchange = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const arr = JSON.parse(ev.target.result);
+          if (Array.isArray(arr)) {
+            notes = arr;
+            saveNotes(); // Сохраняем в localStorage, если папка не выбрана
+            renderTagsAndCategories();
+            renderSidebar();
+            renderNotes();
+          }
+        } catch (err) {
+          console.error("Ошибка импорта:", err);
+          alert("Ошибка импорта файла.");
+        }
+      };
+      reader.readAsText(file);
+    };
+  }
+
+  const exportBtn = document.getElementById('export-notes-btn');
+  if (exportBtn) {
+    exportBtn.onclick = function() {
+      const data = JSON.stringify(notes, null, 2);
+      const blob = new Blob([data], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'notes-export.json';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(()=>{
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    };
+  }
+
+  const themeBtn = document.getElementById('toggle-theme');
+  if (themeBtn) {
+    themeBtn.onclick = function() {
+      isDark = !isDark;
+      document.body.classList.toggle('dark', isDark);
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      saveTheme();
+    };
+  }
+
+  const cancelBtn = document.getElementById('cancel-modal');
+  if (cancelBtn) {
+    cancelBtn.onclick = closeModal;
+  }
+
+  // Обработчик для новой кнопки выбора директории
+  const selectDirBtn = document.getElementById('select-notes-dir-btn');
+  if (selectDirBtn) {
+    selectDirBtn.onclick = selectNotesDirectory;
+  }
+});
+
+// Сохранение/редактирование заметки
+const noteForm = document.getElementById('note-form');
+noteForm.onsubmit = async function(e) {
+  e.preventDefault();
+  const id = document.getElementById('note-id').value || Math.random().toString(36).slice(2);
+  const title = document.getElementById('note-title').value.trim();
+  const category = document.getElementById('note-category').value.trim();
+  const tags = document.getElementById('note-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const content = document.getElementById('note-content').value.trim();
+  let image = '';
+  let attachments = [];
+  const imgInput = document.getElementById('note-image');
+  if (imgInput && imgInput.files && imgInput.files[0]) {
+    image = await fileToBase64(imgInput.files[0]);
+  }
+  const filesInput = document.getElementById('note-files');
+  if (filesInput && filesInput.files && filesInput.files.length) {
+    for (let f of filesInput.files) {
+      const data = await fileToBase64(f);
+      attachments.push({name: f.name, type: f.type, data});
+    }
+  }
+  let note = notes.find(n => n.id === id);
+  if (note) {
+    note.title = title;
+    note.category = category;
+    note.tags = tags;
+    note.content = content;
+    if (image) note.image = image;
+    if (attachments.length) note.attachments = attachments;
+  } else {
+    note = {id, title, category, tags, content, image, attachments, date: new Date().toISOString()};
+    notes.push(note);
+  }
+  saveNotes();
+  renderTagsAndCategories();
+  renderSidebar();
+  renderNotes();
+  closeModal();
+};
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Удаление заметки
+const delBtn = document.getElementById('delete-note-btn');
+if (delBtn) {
+  delBtn.onclick = function() {
+    const id = document.getElementById('note-id').value;
+    if (!id) return;
+    notes = notes.filter(n => n.id !== id);
+    saveNotes();
+    renderTagsAndCategories();
+    renderSidebar();
+    renderNotes();
+    closeModal();
+  };
+}
+
+// Импорт заметок
+const importBtn = document.getElementById('import-notes-btn');
+const importInput = document.getElementById('import-notes-input');
+if (importBtn && importInput) {
+  importBtn.onclick = () => importInput.click();
+  importInput.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const arr = JSON.parse(ev.target.result);
+        if (Array.isArray(arr)) {
+          notes = arr;
+          saveNotes();
+          renderTagsAndCategories();
+          renderSidebar();
+          renderNotes();
+        }
+      } catch {}
+    };
+    reader.readAsText(file);
+  };
+}
+
+// Экспорт заметок
+const exportBtn = document.getElementById('export-notes-btn');
+if (exportBtn) {
+  exportBtn.onclick = function() {
+    const data = JSON.stringify(notes, null, 2);
+    const blob = new Blob([data], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'notes-export.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  };
+}
+
+// Переключатель темы
+const themeBtn = document.getElementById('toggle-theme');
+if (themeBtn) {
+  themeBtn.onclick = function() {
+    isDark = !isDark;
+    document.body.classList.toggle('dark', isDark);
+    themeBtn.textContent = isDark ? '☀️' : '🌙';
+    saveTheme();
+  };
+}
+
+// Кнопка отмены
+const cancelBtn = document.getElementById('cancel-modal');
+if (cancelBtn) {
+  cancelBtn.onclick = closeModal;
+}
+</script>
+</body>
+</html>

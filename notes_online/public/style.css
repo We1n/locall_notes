@@ -1,0 +1,243 @@
+/* Светлая тема (по умолчанию) */
+body {
+  background-color: #f9fafb;
+  color: #1f2937;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+.bg-white, .bg-gray-50 {
+  background-color: #fff !important;
+  color: #1f2937 !important;
+}
+
+/* Карточки */
+.note-card {
+  border-radius: 1.25rem; /* rounded-2xl */
+  box-shadow: 0 4px 24px 0 rgba(31,41,55,0.06), 0 1.5px 3px 0 rgba(31,41,55,0.04);
+  background: #fff;
+  padding: 1.25rem;
+  min-height: 170px;
+  transition: box-shadow 0.2s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(59,130,246,0.12), 0 3px 10px 0 rgba(31,41,55,0.07);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* Sidebar */
+.sidebar {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 8px 0 rgba(31,41,55,0.06);
+  padding: 1.5rem 1rem;
+  min-width: 220px;
+  transition: background 0.3s;
+  border: 1px solid #e5e7eb;
+}
+.sidebar-tag {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 1em;
+  margin: 2px 0 2px 0;
+  cursor: pointer;
+  color: #2563eb;
+  background: transparent;
+  transition: background 0.18s, color 0.18s;
+}
+.sidebar-tag.selected {
+  background: #3b82f6;
+  color: #fff;
+}
+.sidebar-tag:hover {
+  background: #e0e7ef;
+  color: #1d4ed8;
+}
+body.dark .sidebar {
+  background: #1e293b;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+}
+body.dark .sidebar-tag {
+  color: #60a5fa;
+}
+body.dark .sidebar-tag.selected {
+  background: #60a5fa;
+  color: #1e293b;
+}
+body.dark .sidebar-tag:hover {
+  background: #334155;
+  color: #60a5fa;
+}
+
+/* Тёмная тема */
+body.dark {
+  background-color: #0f172a;
+  color: #e5e7eb;
+}
+body.dark .bg-white,
+body.dark .bg-gray-50 {
+  background-color: #1e293b !important;
+  color: #e5e7eb !important;
+}
+body.dark .note-card {
+  background: #1e293b;
+  color: #e5e7eb;
+  box-shadow: 0 4px 24px 0 rgba(96,165,250,0.08), 0 1.5px 3px 0 rgba(16,185,129,0.05);
+}
+body.dark .note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(96,165,250,0.18), 0 3px 10px 0 rgba(52,211,153,0.08);
+}
+body.dark .sidebar {
+  background: #1e293b;
+  color: #e5e7eb;
+}
+
+/* Плавное переключение тем */
+body, .note-card, .sidebar {
+  transition: background 0.3s, color 0.3s, box-shadow 0.2s;
+}
+
+/* Теги-чипы */
+.chip {
+  display: inline-block;
+  padding: 0.25em 0.8em;
+  border-radius: 999px;
+  font-size: 0.92em;
+  font-weight: 500;
+  margin-right: 0.25em;
+  margin-bottom: 0.25em;
+  background: #f3f4f6;
+  color: #2563eb;
+  transition: background 0.2s, color 0.2s;
+}
+.chip-blue {
+  background: #2563eb;
+  color: #fff;
+}
+.chip-green {
+  background: #10b981;
+  color: #fff;
+}
+body.dark .chip {
+  background: #334155;
+  color: #60a5fa;
+}
+body.dark .chip-blue {
+  background: #60a5fa;
+  color: #1e293b;
+}
+body.dark .chip-green {
+  background: #34d399;
+  color: #1e293b;
+}
+
+/* Быстрые действия (иконки) */
+.note-card .edit-note-btn, .note-card .delete-note-btn {
+  opacity: 0;
+  pointer-events: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 2px;
+  transition: opacity 0.18s;
+}
+.note-card.group:hover .edit-note-btn,
+.note-card.group:hover .delete-note-btn,
+.note-card:hover .edit-note-btn,
+.note-card:hover .delete-note-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.note-card .edit-note-btn svg,
+.note-card .delete-note-btn svg {
+  vertical-align: middle;
+}
+
+/* Responsive-сетка карточек */
+#notes-list {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  #notes-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  #notes-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Hover и тени карточек */
+.note-card {
+  box-shadow: 0 4px 24px 0 rgba(31,41,55,0.06), 0 1.5px 3px 0 rgba(31,41,55,0.04);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(59,130,246,0.13), 0 3px 10px 0 rgba(31,41,55,0.09);
+  transform: translateY(-2px) scale(1.01);
+}
+body.dark .note-card {
+  box-shadow: 0 4px 24px 0 rgba(96,165,250,0.08), 0 1.5px 3px 0 rgba(16,185,129,0.05);
+}
+body.dark .note-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(96,165,250,0.18), 0 3px 10px 0 rgba(52,211,153,0.08);
+}
+
+/* Панель управления */
+.control-bar {
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Мелкие детали */
+::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+body.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+body.dark .text-gray-400 { color: #a1a1aa !important; }
+
+/* Дополнительные стили для плавной анимации модального окна и мелких деталей */
+
+#modal {
+  transition: opacity 0.2s;
+  background: rgba(0,0,0,0.35);
+  z-index: 50;
+}
+#modal > div {
+  transition: transform 0.2s, opacity 0.2s;
+  transform: scale(1);
+  opacity: 1;
+}
+#modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#modal.hidden > div {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+#modal:not(.hidden) {
+  opacity: 1;
+}
+#modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

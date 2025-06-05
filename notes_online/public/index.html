@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заметки и промпты</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <div class="container mx-auto py-6">
+    <div class="flex justify-end mb-2 gap-2">
+      <button id="import-notes-btn" class="px-2 py-1 rounded bg-blue-200 hover:bg-blue-300 text-sm" title="Импортировать заметки">Импорт</button>
+      <input type="file" id="import-notes-input" accept=".json" style="display:none">
+      <button id="toggle-theme" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-xl" title="Переключить тему">🌙</button>
+    </div>
+    <h1 class="text-3xl font-bold mb-6 text-center">Мои заметки и промпты</h1>
+      <button id="close-modal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">&times;</button>
+      <h2 class="text-xl font-bold mb-4" id="modal-title">Новая заметка</h2>
+      <form id="note-form" class="flex flex-col gap-3">
+        <input type="hidden" id="note-id">
+        <input id="note-title" type="text" placeholder="Заголовок" class="border rounded px-3 py-1" required>
+        <input id="note-category" type="text" placeholder="Категория" class="border rounded px-3 py-1">
+        <input id="note-tags" type="text" placeholder="Теги (через запятую)" class="border rounded px-3 py-1" list="tags-datalist">
+        <datalist id="tags-datalist"></datalist>
+<datalist id="tags-datalist"></datalist>
+        <textarea id="note-content" rows="4" placeholder="Текст заметки..." class="border rounded px-3 py-1" required></textarea>
+        <label class="block">
+          <span>Картинка (необязательно):</span>
+          <input id="note-image" type="file" accept="image/*" class="mt-1">
+        </label>
+        <label class="block mt-2">
+          <span>Файлы (PDF, TXT):</span>
+          <input id="note-files" type="file" accept=".pdf,.txt" multiple class="mt-1">
+        </label>
+        <div class="flex gap-2 mt-2">
+          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Сохранить</button>
+          <button type="button" id="delete-note-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hidden">Удалить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="app.js"></script>
+  <script src="app.export.js"></script>
+</body>
+</html>
