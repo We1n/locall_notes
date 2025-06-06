@@ -6,6 +6,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Заметки и промпты (один файл)</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -55,8 +56,8 @@ body {
   display: inline-block;
   padding: 3px 12px;
   border-radius: 999px;
-  font-size: 1em;
-  margin: 2px 0 2px 0;
+  font-size: 0.9em;
+  margin: 2px 0;
   cursor: pointer;
   color: #2563eb;
   background: transparent;
@@ -111,8 +112,8 @@ body.dark .sidebar {
 }
 
 /* Плавное переключение тем */
-body, .note-card, .sidebar {
-  transition: background 0.3s, color 0.3s, box-shadow 0.2s;
+body, .note-card, .sidebar, input, select, textarea, button {
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.2s, border-color 0.3s;
 }
 
 /* Chips */
@@ -156,7 +157,7 @@ body.dark .chip-green {
   border: none;
   padding: 0;
   margin: 0 2px;
-  transition: opacity 0.18s;
+  transition: opacity 0.18s, transform 0.18s;
 }
 .note-card.group:hover .edit-note-btn,
 .note-card.group:hover .delete-note-btn,
@@ -168,6 +169,9 @@ body.dark .chip-green {
 .note-card .edit-note-btn svg,
 .note-card .delete-note-btn svg {
   vertical-align: middle;
+}
+.note-card .edit-note-btn:hover, .note-card .delete-note-btn:hover {
+  transform: scale(1.1);
 }
 
 #notes-list {
@@ -185,12 +189,30 @@ body.dark .chip-green {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+@media (min-width: 1280px) {
+  #notes-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
 
 /* Дополнительные стили для плавной анимации модального окна и мелких деталей */
 
 #modal {
-  transition: opacity 0.2s;
-  background: rgba(0,0,0,0.35);
+  transition: opacity 0.25s ease-out;
+  background: rgba(0,0,0,0.45);
+}
+
+@keyframes modal-pop-in {
+  from { transform: translateY(20px) scale(0.95); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.animate-modal {
+  animation: modal-pop-in 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes note-fade-in {
+  from { opacity: 0; transform: translateY(15px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Стили для Markdown контента */
@@ -222,24 +244,24 @@ body.dark .markdown-content a { color: #60a5fa; }
   </div>
 
   <div id="app-wrapper" class="hidden">
-    <div class="container mx-auto py-6">
+    <div class="container mx-auto py-6 px-2 sm:px-4">
     <div class="flex justify-end mb-2 gap-2">
       <button id="import-notes-btn" class="px-2 py-1 rounded bg-blue-200 hover:bg-blue-300 text-sm" title="Импортировать заметки">Импорт</button>
       <input type="file" id="import-notes-input" accept=".json" style="display:none">
       <button id="export-notes-btn" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-sm" title="Экспортировать заметки">Экспорт</button>
-      <button id="toggle-theme" class="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-xl" title="Переключить тему">🌙</button>
+      <button id="toggle-theme" class="px-3 py-1 rounded-full bg-gray-200 hover:bg-gray-300 text-xl" title="Переключить тему">🌙</button>
     </div>
     <h1 class="text-3xl font-bold mb-6 text-center">Мои заметки и промпты</h1>
-    <div class="flex flex-row gap-6">
+    <div class="flex flex-col lg:flex-row gap-6">
       <!-- Sidebar с тегами и фильтрами -->
-      <aside class="sidebar min-w-[220px]">
+      <aside class="sidebar w-full lg:w-auto lg:min-w-[220px]">
         <div id="sidebar-tags"></div>
       </aside>
       <!-- Основная часть -->
       <main class="flex-1 bg-white rounded shadow p-4">
-        <div class="flex flex-col sm:flex-row items-center mb-4 gap-2">
-          <button id="add-note-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Новая заметка</button>
-          <button id="select-notes-dir-btn" class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 ml-2">Выбрать папку для заметок</button>
+        <div class="flex flex-col sm:flex-row flex-wrap items-center mb-4 gap-2">
+          <button id="add-note-btn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" title="Создать новую заметку">Новая заметка</button>
+          <button id="select-notes-dir-btn" class="px-3 py-1.5 text-sm bg-green-500 text-white rounded hover:bg-green-600 ml-2" title="Выбрать другую папку для хранения заметок">Сменить папку</button>
           <input id="search" type="text" placeholder="Поиск..." class="border rounded px-3 py-1 flex-1">
           <label for="sort-notes" class="ml-2">Сортировка:</label>
           <select id="sort-notes" class="border rounded px-2 py-1">
@@ -260,9 +282,9 @@ body.dark .markdown-content a { color: #60a5fa; }
   <div id="selected-dir-path" class="text-xs text-gray-500 mt-1 ml-auto mr-2">Папка не выбрана</div>
 
   <!-- Модальное окно для добавления/редактирования заметки -->
-  <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden" style="transition:opacity 0.2s;">
-    <div class="bg-white dark:bg-[#1e293b] p-7 rounded-2xl shadow-xl w-full max-w-lg relative flex flex-col gap-2 animate-modal" style="box-shadow: 0 8px 40px 0 rgba(31,41,55,0.18); transition:transform 0.18s,opacity 0.18s;">
-      <button id="close-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+  <div id="modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-[#1e293b] p-7 rounded-2xl shadow-xl w-full max-w-lg relative flex flex-col gap-2 animate-modal" style="box-shadow: 0 8px 40px 0 rgba(31,41,55,0.18);">
+      <button id="close-modal" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl" title="Закрыть">×</button>
       <h2 class="text-xl font-bold mb-4 text-center" id="modal-title">Новая заметка</h2>
       <form id="note-form" class="flex flex-col gap-3">
   <input type="hidden" id="note-id">
@@ -280,15 +302,17 @@ body.dark .markdown-content a { color: #60a5fa; }
     <input id="note-files" type="file" accept=".pdf,.txt" multiple class="mt-1">
   </label>
   <div class="flex gap-2 mt-5">
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Сохранить</button>
-    <button type="button" id="delete-note-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hidden">Удалить</button>
-    <button type="button" id="cancel-modal" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Отмена</button>
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition" title="Сохранить заметку">Сохранить</button>
+    <button type="button" id="delete-note-btn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 hidden" title="Удалить заметку навсегда">Удалить</button>
+    <button type="button" id="cancel-modal" class="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition" title="Отменить и закрыть">Отмена</button>
   </div>
 </form>
     </div>
   </div>
   <script>
     const LS_THEME = 'notes-theme-v2';
+    const LS_KEY = 'notes-key';
+    const LS_ORDER = 'notes-order';
     const IDB_KEY_RECENT_DIRS = 'notes-recent-dirs-v1';
     let notes = [];
     let notesDirectoryHandle = null;
@@ -342,7 +366,10 @@ body.dark .markdown-content a { color: #60a5fa; }
     };
 
     async function saveNoteToFile(note) {
-      if (!notesDirectoryHandle) return;
+      if (!notesDirectoryHandle) {
+        console.error("Directory handle not initialized");
+        return;
+      }
       try {
         const fileHandle = await notesDirectoryHandle.getFileHandle(`${note.id}.json`, { create: true });
         const writable = await fileHandle.createWritable();
@@ -351,6 +378,7 @@ body.dark .markdown-content a { color: #60a5fa; }
       } catch (e) {
         console.error("Error saving note:", e);
         alert("Не удалось сохранить заметку. Проверьте разрешения для папки.");
+        throw e; // Пробрасываем ошибку дальше для обработки
       }
     }
 
@@ -402,7 +430,7 @@ body.dark .markdown-content a { color: #60a5fa; }
       localStorage.setItem(LS_THEME, isDark ? 'dark' : 'light');
     }
     function loadTheme() {
-      isDark = localStorage.getItem(LS_THEME) === 'dark';
+      isDark = localStorage.getItem(LS_THEME) === 'dark' || (!('notes-theme-v2' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
       document.body.classList.toggle('dark', isDark);
       document.getElementById('toggle-theme').textContent = isDark ? '☀️' : '🌙';
     }
@@ -464,12 +492,12 @@ body.dark .markdown-content a { color: #60a5fa; }
       }
       // Рендер
       const notesList = document.getElementById('notes-list');
-      notesList.innerHTML = sorted.map(note => {
+      notesList.innerHTML = sorted.length ? sorted.map(note => {
         const drag = sort==='custom' ? 'draggable="true"' : '';
-        return `<div class="border rounded p-3 bg-gray-50 shadow-sm note-card" data-id="${note.id}" ${drag}>
+        return `<div class="border rounded p-3 bg-gray-50 shadow-sm note-card" style="opacity: 0" data-id="${note.id}" ${drag}>
           <div class="flex items-center justify-between mb-2">
             <div class="font-bold text-lg">${note.title||''}</div>
-            <button class="text-blue-600 hover:underline text-sm edit-btn" data-id="${note.id}">Редактировать</button>
+            <button class="text-blue-600 hover:underline text-sm edit-btn" data-id="${note.id}" title="Редактировать заметку">Редактировать</button>
           </div>
           <div class="text-sm text-gray-500 mb-1">${note.category||''}</div>
           <div class="flex flex-wrap gap-1 mb-2">
@@ -493,7 +521,11 @@ body.dark .markdown-content a { color: #60a5fa; }
             </div>
           ` : ''}
         </div>`;
-      }).join('') || '<div class="text-gray-400">Нет заметок</div>';
+      }).join('') : '<div class="text-gray-400">Нет заметок</div>';
+
+      notesList.querySelectorAll('.note-card').forEach((card, index) => {
+        card.style.animation = `note-fade-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${index * 0.04}s forwards`;
+      });
       // Drag-and-drop
       if (sort==='custom') {
         let dragSrcId = null;
@@ -540,33 +572,67 @@ body.dark .markdown-content a { color: #60a5fa; }
     }
 
     function openModal() {
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal-title').textContent = 'Новая заметка';
-      document.getElementById('note-form').reset();
-      document.getElementById('note-id').value = '';
-      document.getElementById('note-category').value = '';
-      document.getElementById('note-image').value = '';
-      document.getElementById('note-files').value = '';
+      const modal = document.getElementById('modal');
+      const modalTitle = document.getElementById('modal-title');
+      const noteForm = document.getElementById('note-form');
+      const noteId = document.getElementById('note-id');
+      const noteCategory = document.getElementById('note-category');
+      const noteImage = document.getElementById('note-image');
+      const noteFiles = document.getElementById('note-files');
       const delBtn = document.getElementById('delete-note-btn');
-      if (delBtn) delBtn.classList.add('hidden');
+
+      if (!modal || !modalTitle || !noteForm || !noteId || !noteCategory || !noteImage || !noteFiles || !delBtn) {
+        console.error("Required modal elements not found");
+        return;
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      modalTitle.textContent = 'Новая заметка';
+      noteForm.reset();
+      noteId.value = '';
+      noteCategory.value = '';
+      noteImage.value = '';
+      noteFiles.value = '';
+      delBtn.classList.add('hidden');
     }
 
     function openEditModal(noteId) {
-      const note = notes.find(n => n.id === noteId);
-      if (!note) return;
-      document.getElementById('modal').classList.remove('hidden');
-      document.getElementById('modal-title').textContent = 'Редактировать заметку';
-      document.getElementById('note-id').value = note.id;
-      document.getElementById('note-title').value = note.title;
-      document.getElementById('note-category').value = note.category || '';
-      document.getElementById('note-tags').value = note.tags ? note.tags.join(', ') : '';
-      document.getElementById('note-content').value = note.content;
+      const modal = document.getElementById('modal');
+      const modalTitle = document.getElementById('modal-title');
+      const noteForm = document.getElementById('note-form');
+      const noteIdInput = document.getElementById('note-id');
+      const noteTitle = document.getElementById('note-title');
+      const noteCategory = document.getElementById('note-category');
+      const noteTags = document.getElementById('note-tags');
+      const noteContent = document.getElementById('note-content');
       const delBtn = document.getElementById('delete-note-btn');
-      if (delBtn) delBtn.classList.remove('hidden');
+
+      if (!modal || !modalTitle || !noteForm || !noteIdInput || !noteTitle || !noteCategory || !noteTags || !noteContent || !delBtn) {
+        console.error("Required modal elements not found");
+        return;
+      }
+
+      const note = notes.find(n => n.id === noteId);
+      if (!note) {
+        console.error("Note not found:", noteId);
+        return;
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      modalTitle.textContent = 'Редактировать заметку';
+      noteIdInput.value = note.id;
+      noteTitle.value = note.title;
+      noteCategory.value = note.category || '';
+      noteTags.value = note.tags ? note.tags.join(', ') : '';
+      noteContent.value = note.content;
+      delBtn.classList.remove('hidden');
     }
 
     function closeModal() {
       document.getElementById('modal').classList.add('hidden');
+      document.body.style.overflow = '';
     }
 
     async function loadData() {
@@ -679,7 +745,7 @@ body.dark .markdown-content a { color: #60a5fa; }
       if (themeToggle) {
         themeToggle.onclick = function() {
           isDark = !isDark;
-          document.documentElement.classList.toggle('dark', isDark);
+          document.body.classList.toggle('dark', isDark);
           saveTheme();
           this.textContent = isDark ? '☀️' : '🌙';
         };
@@ -727,7 +793,7 @@ body.dark .markdown-content a { color: #60a5fa; }
         };
       }
 
-      const cancelBtn = document.getElementById('cancel-note-btn');
+      const cancelBtn = document.getElementById('cancel-modal');
       if (cancelBtn) {
         cancelBtn.onclick = closeModal;
       }
@@ -768,58 +834,61 @@ body.dark .markdown-content a { color: #60a5fa; }
     });
 
     const noteForm = document.getElementById('note-form');
-    noteForm.onsubmit = async function(e) {
-      e.preventDefault();
-      const id = document.getElementById('note-id').value;
-      const title = document.getElementById('note-title').value;
-      const category = document.getElementById('note-category').value;
-      const tags = document.getElementById('note-tags').value.split(',').map(t => t.trim()).filter(t => t);
-      const content = document.getElementById('note-content').value;
-      const imageInput = document.getElementById('note-image');
-      const attachmentsInput = document.getElementById('note-files');
-      let image = null;
-      let attachments = [];
+    if (noteForm) {
+      noteForm.onsubmit = async function(e) {
+        e.preventDefault();
+        try {
+          const id = document.getElementById('note-id').value;
+          const title = document.getElementById('note-title').value;
+          const category = document.getElementById('note-category').value;
+          const tags = document.getElementById('note-tags').value.split(',').map(t => t.trim()).filter(t => t);
+          const content = document.getElementById('note-content').value;
+          const imageInput = document.getElementById('note-image');
+          const attachmentsInput = document.getElementById('note-files');
+          let image = null;
+          let attachments = [];
 
-      if (imageInput.files[0]) {
-        image = await fileToBase64(imageInput.files[0]);
-      }
+          if (imageInput.files[0]) {
+            image = await fileToBase64(imageInput.files[0]);
+          }
 
-      for (const f of attachmentsInput.files) {
-        const data = await fileToBase64(f);
-        attachments.push({name: f.name, type: f.type, data});
-      }
+          for (const f of attachmentsInput.files) {
+            const data = await fileToBase64(f);
+            attachments.push({name: f.name, type: f.type, data});
+          }
 
-      const existingNote = notes.find(n => n.id === id);
-      let noteData;
+          const existingNote = notes.find(n => n.id === id);
+          let noteData;
 
-      if (existingNote) {
-        noteData = { ...existingNote, title, category, tags, content };
-        if (image) noteData.image = image;
-        if (attachments.length) noteData.attachments = attachments;
-      } else {
-        noteData = {id, title, category, tags, content, image, attachments, date: new Date().toISOString()};
-      }
+          if (existingNote) {
+            noteData = { ...existingNote, title, category, tags, content };
+            if (image) noteData.image = image;
+            if (attachments.length) noteData.attachments = attachments;
+          } else {
+            noteData = {
+              id: id || crypto.randomUUID(),
+              title,
+              category,
+              tags,
+              content,
+              image,
+              attachments,
+              date: new Date().toISOString()
+            };
+          }
 
-      await saveNoteToFile(noteData);
+          await saveNoteToFile(noteData);
+          notes = notes.filter(n => n.id !== noteData.id);
+          notes.push(noteData);
 
-      renderTagsAndCategories();
-      renderSidebar();
-      renderNotes();
-      closeModal();
-    };
-
-    const delBtn = document.getElementById('delete-note-btn');
-    if (delBtn) {
-      delBtn.onclick = async function() {
-        const id = document.getElementById('note-id').value;
-        if (!id) return;
-        if (!confirm("Вы уверены, что хотите удалить эту заметку? Файл будет удален из папки.")) return;
-        await deleteNoteFile(id);
-        notes = notes.filter(n => n.id !== id);
-        renderTagsAndCategories();
-        renderSidebar();
-        renderNotes();
-        closeModal();
+          renderTagsAndCategories();
+          renderSidebar();
+          renderNotes();
+          closeModal();
+        } catch (error) {
+          console.error("Error saving note:", error);
+          alert("Произошла ошибка при сохранении заметки. Пожалуйста, попробуйте снова.");
+        }
       };
     }
 

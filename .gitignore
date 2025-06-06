@@ -68,7 +68,3 @@ typings/
 
 # VS Code
 .vscode/
-
-# Notes specific - if any temp or local config files are created
-notes_online/notes/*
-!notes_online/notes/.gitkeep
