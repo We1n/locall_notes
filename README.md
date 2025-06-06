@@ -1,216 +1,208 @@
 <div align="center">
-
-  <!-- Замените на URL вашего логотипа, если он есть, или удалите эту строку -->
-  <!-- <img src="URL_К_ВАШЕМУ_ЛОГОТИПУ" alt="Project Logo" width="150"/> -->
-
-  <h1>📝 Заметки: Онлайн и Офлайн / Notes: Online & Offline</h1>
-
-  <p>
-    <strong>Простое и удобное приложение для создания и управления заметками.</strong><br />
-    <strong>Simple and convenient application for creating and managing notes.</strong>
-  </p>
-
-  <p>
-    <a href="#russian-version"><strong>Русская версия</strong></a> ·
-    <a href="#english-version"><strong>English Version</strong></a>
-  </p>
-
-  <p>
-    <!-- Значки (Badges) -->
-    <img src="https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge" alt="Version"/>
-    <!-- Добавьте другие значки, например, лицензию, если она есть -->
-    <!-- <img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License"/> -->
-    <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js"/>
-    <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js"/>
-    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript"/>
-  </p>
-
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Scroll.png" alt="Scroll" width="120" height="120">
+<h1>Локальные Заметки | Local Notes</h1>
+<p>
+<strong>Ваши заметки. Ваши файлы. Ваш компьютер.</strong>
+<br/>
+<em>Простое и безопасное приложение для заметок, работающее полностью офлайн.</em>
+</p>
+<p>
+<a href="#russian-version"><strong>Русская версия</strong></a> ·
+<a href="#english-version"><strong>English Version</strong></a>
+</p>
+<p>
+<img src="https://img.shields.io/badge/version-2.0-blue?style=for-the-badge" alt="Version"/>
+<img src="https://img.shields.io/badge/license-Personal_Use-green?style=for-the-badge" alt="License"/>
+<img src="https://img.shields.io/badge/status-active-brightgreen?style=for-the-badge" alt="Status"/>
+<img src="https://img.shields.io/github/stars/KarpovTatts/local-notes?style=for-the-badge" alt="Stars"/>
+<img src="https://img.shields.io/github/forks/KarpovTatts/local-notes?style=for-the-badge" alt="Forks"/>
+</p>
 </div>
 
----
+<details>
+<summary><strong>👀 Посмотреть скриншоты / View Screenshots</strong></summary>
+<p align="center">
+<img src="notes_offline/screenshot_main.webp" alt="Главный экран" width="48%"/>
+<img src="notes_offline/screenshot_edit.webp" alt="Редактирование заметки" width="48%"/>
+</p>
+</details>
 
 <a id="russian-version"></a>
-<div align="right">
-  <a href="#english-version">Switch to English 🇬🇧</a>
-</div>
+# 🇷🇺 Русская версия
 
-## 🇷🇺 Русская версия
+## ✨ Ключевые особенности
+- 🔐 Полный контроль и приватность: Все заметки хранятся как отдельные файлы в папке на вашем компьютере. Никаких облаков и серверов.
+- ✍️ Мощный редактор: Создавайте красивые заметки с помощью форматирования Markdown.
+- 📂 Поддержка вложений: Прикрепляйте к заметкам изображения, PDF и текстовые файлы.
+- 🎨 Приятный интерфейс: Переключайтесь между светлой и темной темами.
+- 🔍 Умный поиск и фильтрация: Мгновенно находите нужную информацию по тексту или тегам.
+- ↕️ Гибкая сортировка: Организуйте заметки по дате, алфавиту или вручную с помощью drag-and-drop.
+- 🚀 Портативность: Всё приложение — это один HTML-файл. Просто откройте его в браузере.
 
-### 🌟 О проекте
+## ⚙️ Как это работает
+Приложение не использует серверы или облачные сервисы. Оно работает напрямую с файлами на вашем компьютере благодаря современной браузерной технологии File System Access API. Это гарантирует, что ваши данные всегда остаются с вами.
 
-**Заметки: Онлайн и Офлайн** — это универсальное приложение, которое поможет вам легко управлять вашими идеями, задачами и любой другой информацией. Оно доступно в двух режимах:
-*   **🌍 Офлайн-версия**: Работает прямо в браузере, все данные хранятся локально на вашем устройстве. Идеально для быстрой работы без интернета.
-*   **☁️ Онлайн-версия**: Клиент-серверное приложение для доступа к вашим заметкам с любого устройства через веб-интерфейс, с хранением данных на сервере.
+### Технологии
+- Ванильный JavaScript
+- Tailwind CSS
+- HTML5
 
-### ✨ Ключевые возможности
+### Хранение данных
+- Заметки: .json файлы в выбранной вами папке
+- Настройки: IndexedDB для запоминания пути к папке
 
-*   ✍️ **Создание и управление заметками**: Легко добавляйте, просматривайте, редактируйте и удаляйте заметки.
-*   🏷️ **Организация**: Используйте теги и категории для структурирования информации.
-*   🖼️ **Изображения**: Прикрепляйте изображения к вашим заметкам.
-*   🎨 **Темы**: Переключайтесь между светлой и темной темами для комфортной работы.
-*   🔄 **Импорт и Экспорт**: Сохраняйте резервные копии (в формате JSON) или переносите данные.
-*   🔍 **Поиск и Фильтрация**: Быстро находите нужные заметки.
-*   📱 **Два режима**: Полностью офлайн или онлайн с серверной частью.
+## 🚀 Начало работы
+1. Скачайте файл notes-offline.html
+2. Откройте его в современном браузере (Chrome, Edge, Opera)
+3. Выберите папку, где будут храниться ваши заметки
+4. Готово! Наслаждайтесь полным контролем над своими данными
 
-### 🛠️ Технологический стек
+## 📜 Лицензия и использование
+Этот проект распространяется по персональной лицензии.
 
-*   **Бэкенд (Онлайн-версия)**:
-    *   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js"/> Node.js
-    *   <img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white" alt="Express.js"/> Express.js
-    *   <img src="https://img.shields.io/badge/Multer-grey?style=flat-square" alt="Multer"/> Multer (для загрузки файлов)
-*   **Фронтенд (Обе версии)**:
-    *   <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5"/> HTML5
-    *   <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3"/> CSS3 (включая <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"/> Tailwind CSS для офлайн-версии)
-    *   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript"/> JavaScript
-*   **Хранение данных**:
-    *   Офлайн: `localStorage` браузера.
-    *   Онлайн: JSON-файлы на сервере.
+✅ Вы можете:
+- Бесплатно использовать это приложение в личных, некоммерческих целях
 
-### 🖼️ Скриншоты (Офлайн-версия)
+❌ Вы не можете:
+- Распространять, продавать, модифицировать и использовать код в коммерческих проектах без письменного разрешения автора
 
-<p align="center">
-  <img src="notes_offline/screenshot_main.webp" alt="Главный экран офлайн-версии" width="45%"/>
-  <img src="notes_offline/screenshot_edit.webp" alt="Редактирование заметки в офлайн-версии" width="45%"/>
-</p>
+Это сделано для защиты авторских прав и поддержки дальнейшего развития проекта.
 
-### 🚀 Начало работы
+## 🗺️ Планы развития (Roadmap)
+- [ ] Улучшить производительность при очень большом количестве заметок
+- [ ] Добавить возможность шифрования заметок
 
-#### 1. 🌍 Офлайн-версия (`notes_offline`)
-
-1.  Перейдите в папку `notes_offline`.
-2.  Откройте файл `notes-offline.html` в вашем браузере.
-    *   **Важно**: Данные хранятся в `localStorage` и привязаны к браузеру. Используйте экспорт для бэкапа!
-
-#### 2. ☁️ Онлайн-версия (`notes_online`)
-
-1.  Убедитесь, что у вас установлен [Node.js](https://nodejs.org/).
-2.  Откройте терминал в папке `notes_online`.
-3.  Установите зависимости: `npm install`
-4.  Запустите сервер: `npm start` (или `node server.js`)
-5.  Откройте в браузере: `http://localhost:3000`
-
-### 🗺️ Планы развития (Roadmap)
-
-*   [ ] Улучшение безопасности `notes_online` (аутентификация).
-*   [ ] Оптимизация хранения данных `notes_online` (например, SQLite).
-*   [ ] Синхронизация между офлайн и онлайн версиями.
-*   [ ] Расширенный редактор текста (Markdown/WYSIWYG).
-*   [ ] Улучшение UI/UX.
-
-### 🤝 Участие в разработке
-
+## 🤝 Участие в разработке
 Предложения и пул-реквесты приветствуются! Если у вас есть идеи по улучшению, пожалуйста, создайте Issue или Fork'ните репозиторий и сделайте свои изменения.
 
-1.  Форкните проект.
-2.  Создайте свою ветку для фичи (`git checkout -b feature/AmazingFeature`).
-3.  Закоммитьте свои изменения (`git commit -m 'Add some AmazingFeature'`).
-4.  Отправьте в удаленный репозиторий (`git push origin feature/AmazingFeature`).
-5.  Откройте Пул-Реквест.
+1. Форкните проект
+2. Создайте свою ветку для фичи (`git checkout -b feature/AmazingFeature`)
+3. Закоммитьте свои изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Отправьте в удаленный репозиторий (`git push origin feature/AmazingFeature`)
+5. Откройте Пул-Реквест
 
-### 📜 Лицензия
+## 📋 Часто задаваемые вопросы (FAQ)
+<details>
+<summary><strong>❓ Как это работает?</strong></summary>
+Приложение использует File System Access API для работы с файлами на вашем компьютере. Все заметки сохраняются как отдельные JSON-файлы в выбранной вами папке.
+</details>
 
-Этот проект распространяется под лицензией MIT. Подробнее см. в файле `LICENSE`.
-*(Примечание: добавьте файл LICENSE в ваш репозиторий, например, с текстом лицензии MIT).*
+<details>
+<summary><strong>❓ Безопасно ли это?</strong></summary>
+Да, приложение работает полностью офлайн и не отправляет данные на серверы. Все файлы хранятся локально на вашем компьютере.
+</details>
 
-### 👤 Автор и Поддержка
+<details>
+<summary><strong>❓ Какие браузеры поддерживаются?</strong></summary>
+Приложение работает в современных браузерах с поддержкой File System Access API: Chrome, Edge, Opera. Firefox и Safari пока не поддерживаются.
+</details>
 
-*   **Автор**: KarpovTatts
-*   **Telegram**: [![Telegram](https://img.shields.io/badge/Telegram-KarpovTatts-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/karpovtatts)
-*   **Поддержать разработку**: [![Поддержать проект](https://img.shields.io/badge/Поддержать%20Проект-Донат-ff69b4?style=for-the-badge)](https://pay.cloudtips.ru/p/86838cfa)
+<details>
+<summary><strong>❓ Как перенести заметки на другой компьютер?</strong></summary>
+Просто скопируйте папку с заметками на другой компьютер и откройте приложение там. Все заметки и вложения будут доступны.
+</details>
 
----
+## 👨‍💻 Автор и поддержка
+Автор: We1n (GitHub) | KarpovTatts (Telegram)
+
+Telegram:
+![alt text](https://img.shields.io/badge/Telegram-KarpovTatts-2CA5E0?style=flat&logo=telegram&logoColor=white)
+
+Поддержать проект: Если вам нравится приложение, вы можете поддержать его разработку. Это мотивирует добавлять новые функции!
+![alt text](https://img.shields.io/badge/Поддержать%20Проект-Донат-ff69b4?style=flat)
+
+## 👨‍💻 Другие проекты автора
+- [More projects...](https://github.com/We1n?tab=repositories)
+
 <div align="center"><a href="#top">⬆️ Наверх</a></div>
+
 ---
 
 <a id="english-version"></a>
-<div align="right">
-  <a href="#russian-version">Переключиться на Русский 🇷🇺</a>
-</div>
+# 🇬🇧 English Version
 
-## 🇬🇧 English Version
+## ✨ Key Features
+- 🔐 Full Control & Privacy: All notes are stored as individual files in a folder on your computer. No clouds, no servers.
+- ✍️ Powerful Editor: Create beautiful notes using Markdown formatting.
+- 📂 Attachment Support: Attach images, PDFs, and text files to your notes.
+- 🎨 Pleasant Interface: Switch between light and dark themes.
+- 🔍 Smart Search & Filter: Instantly find the information you need by text or tags.
+- ↕️ Flexible Sorting: Organize notes by date, title, or manually with drag-and-drop.
+- 🚀 Portability: The entire app is a single HTML file. Just open it in your browser.
 
-### 🌟 About The Project
+## ⚙️ How It Works
+This application does not use any servers or cloud services. It interacts directly with files on your computer thanks to the modern browser technology File System Access API. This ensures your data always stays with you.
 
-**Notes: Online & Offline** is a versatile application designed to help you easily manage your ideas, tasks, and any other information. It is available in two modes:
-*   **🌍 Offline Version**: Runs directly in your browser, with all data stored locally on your device. Perfect for quick work without an internet connection.
-*   **☁️ Online Version**: A client-server application to access your notes from any device via a web interface, with data stored on the server.
+### Technologies
+- Vanilla JavaScript
+- Tailwind CSS
+- HTML5
 
-### ✨ Key Features
+### Data Storage
+- Notes: .json files in your chosen folder
+- Settings: IndexedDB to remember the path to your folder
 
-*   ✍️ **Create & Manage Notes**: Easily add, view, edit, and delete notes.
-*   🏷️ **Organization**: Use tags and categories to structure your information.
-*   🖼️ **Images**: Attach images to your notes.
-*   🎨 **Themes**: Switch between light and dark themes for comfortable work.
-*   🔄 **Import & Export**: Save backups (in JSON format) or transfer your data.
-*   🔍 **Search & Filter**: Quickly find the notes you need.
-*   📱 **Dual Mode**: Fully offline or online with a server backend.
+## 🚀 Getting Started
+1. Download the notes-offline.html file
+2. Open it in a modern browser (Chrome, Edge, Opera)
+3. Choose a folder where your notes will be stored
+4. That's it! Enjoy full control over your data
 
-### 🛠️ Tech Stack
+## 📜 License and Usage
+This project is distributed under a Personal Use License.
 
-*   **Backend (Online Version)**:
-    *   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js"/> Node.js
-    *   <img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white" alt="Express.js"/> Express.js
-    *   <img src="https://img.shields.io/badge/Multer-grey?style=flat-square" alt="Multer"/> Multer (for file uploads)
-*   **Frontend (Both Versions)**:
-    *   <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5"/> HTML5
-    *   <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3"/> CSS3 (including <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"/> Tailwind CSS for offline version)
-    *   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript"/> JavaScript
-*   **Data Storage**:
-    *   Offline: Browser `localStorage`.
-    *   Online: JSON files on the server.
+✅ You are free to:
+- Use this application for personal, non-commercial purposes
 
-### 🖼️ Screenshots (Offline Version)
+❌ You are not allowed to:
+- Redistribute, sell, modify, or use the code in commercial projects without the author's written permission
 
-<p align="center">
-  <img src="notes_offline/screenshot_main.webp" alt="Main screen of offline version" width="45%"/>
-  <img src="notes_offline/screenshot_edit.webp" alt="Editing a note in offline version" width="45%"/>
-</p>
+This is to protect the author's rights and support the future development of the project.
 
-### 🚀 Getting Started
+## 🗺️ Development Roadmap
+- [ ] Improve performance with a large number of notes
+- [ ] Add note encryption capability
 
-#### 1. 🌍 Offline Version (`notes_offline`)
+## 🤝 Contributing
+Suggestions and pull requests are welcome! If you have ideas for improvements, please create an Issue or Fork the repository and make your changes.
 
-1.  Navigate to the `notes_offline` folder.
-2.  Open the `notes-offline.html` file in your browser.
-    *   **Important**: Data is stored in `localStorage` and is browser-specific. Use export for backups!
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-#### 2. ☁️ Online Version (`notes_online`)
+## 📋 Frequently Asked Questions (FAQ)
+<details>
+<summary><strong>❓ How does it work?</strong></summary>
+The application uses the File System Access API to work with files on your computer. All notes are saved as individual JSON files in your chosen folder.
+</details>
 
-1.  Ensure you have [Node.js](https://nodejs.org/) installed.
-2.  Open your terminal in the `notes_online` folder.
-3.  Install dependencies: `npm install`
-4.  Start the server: `npm start` (or `node server.js`)
-5.  Open in browser: `http://localhost:3000`
+<details>
+<summary><strong>❓ Is it secure?</strong></summary>
+Yes, the application works completely offline and doesn't send data to servers. All files are stored locally on your computer.
+</details>
 
-### 🗺️ Roadmap
+<details>
+<summary><strong>❓ Which browsers are supported?</strong></summary>
+The application works in modern browsers with File System Access API support: Chrome, Edge, Opera. Firefox and Safari are not yet supported.
+</details>
 
-*   [ ] Enhance `notes_online` security (authentication).
-*   [ ] Optimize `notes_online` data storage (e.g., SQLite).
-*   [ ] Synchronization between offline and online versions.
-*   [ ] Advanced text editor (Markdown/WYSIWYG).
-*   [ ] UI/UX improvements.
+<details>
+<summary><strong>❓ How to transfer notes to another computer?</strong></summary>
+Simply copy the notes folder to another computer and open the application there. All notes and attachments will be available.
+</details>
 
-### 🤝 Contributing
+## 👨‍💻 Author & Support
+Author: We1n (GitHub) | KarpovTatts (Telegram)
 
-Contributions are welcome! If you have ideas for improvement, please open an issue or fork the repository and make your changes.
+Telegram:
+![alt text](https://img.shields.io/badge/Telegram-KarpovTatts-2CA5E0?style=flat&logo=telegram&logoColor=white)
 
-1.  Fork the Project.
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the Branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+Support the Project: If you enjoy the app, you can support its development. This helps motivate the addition of new features!
+![alt text](https://img.shields.io/badge/Support%20Project-Donate-ff69b4?style=flat)
 
-### 📜 License
+## 👨‍💻 Other Projects by Author
+- [More projects...](https://github.com/We1n?tab=repositories)
 
-Distributed under the MIT License. See `LICENSE` for more information.
-*(Note: Add a LICENSE file to your repository, e.g., with the MIT License text).*
-
-### 👤 Author & Support
-
-*   **Author**: KarpovTatts
-*   **Telegram**: [![Telegram](https://img.shields.io/badge/Telegram-KarpovTatts-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/karpovtatts)
-*   **Support Development**: [![Support Project](https://img.shields.io/badge/Support%20Project-Donate-ff69b4?style=for-the-badge)](https://pay.cloudtips.ru/p/86838cfa)
-
----
 <div align="center"><a href="#top">⬆️ Back to Top</a></div>
----
