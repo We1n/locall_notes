@@ -30,64 +30,27 @@
   <img src="scr/1.jpg" alt="Интерфейс приложения" width="800px"/>
 </div>
 
-## ✨ Ключевые особенности
+<details open>
+<summary><strong>✨ Ключевые особенности</strong></summary>
 
 <div align="center">
   <table>
     <tr>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Locked.png" alt="Locked" width="50" height="50" />
-        <br />
-        <strong>Полный контроль</strong>
-        <br />
-        <sub>Все данные на вашем компьютере</sub>
-      </td>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Memo.png" alt="Memo" width="50" height="50" />
-        <br />
-        <strong>Мощный редактор</strong>
-        <br />
-        <sub>Поддержка Markdown</sub>
-      </td>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/File%20Folder.png" alt="File Folder" width="50" height="50" />
-        <br />
-        <strong>Вложения</strong>
-        <br />
-        <sub>Изображения и файлы</sub>
-      </td>
+      <td align="center">🔒<br><strong>Полный контроль</strong><br><sub>Все данные на вашем компьютере</sub></td>
+      <td align="center">📝<br><strong>Мощный редактор</strong><br><sub>Поддержка Markdown</sub></td>
+      <td align="center">📂<br><strong>Вложения</strong><br><sub>Изображения и файлы</sub></td>
     </tr>
     <tr>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Artist%20Palette.png" alt="Artist Palette" width="50" height="50" />
-        <br />
-        <strong>Современный UI</strong>
-        <br />
-        <sub>Светлая и темная темы</sub>
-      </td>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Magnifying%20Glass%20Tilted%20Right.png" alt="Magnifying Glass" width="50" height="50" />
-        <br />
-        <strong>Умный поиск</strong>
-        <br />
-        <sub>По тексту и тегам</sub>
-      </td>
-      <td align="center">
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Up%20Arrow.png" alt="Up Arrow" width="50" height="50" />
-        <br />
-        <strong>Гибкая сортировка</strong>
-        <br />
-        <sub>Drag-and-drop</sub>
-      </td>
+      <td align="center">🎨<br><strong>Современный UI</strong><br><sub>Светлая и темная темы</sub></td>
+      <td align="center">🔍<br><strong>Умный поиск</strong><br><sub>По тексту и тегам</sub></td>
+      <td align="center">↕️<br><strong>Гибкая сортировка</strong><br><sub>Drag-and-drop</sub></td>
     </tr>
   </table>
 </div>
+</details>
 
-## ⚙️ Как это работает
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Gear.png" alt="Gear" width="50" height="50" />
-</div>
+<details>
+<summary><strong>⚙️ Как это работает</strong></summary>
 
 Приложение не использует серверы или облачные сервисы. Оно работает напрямую с файлами на вашем компьютере благодаря современной браузерной технологии File System Access API. Это гарантирует, что ваши данные всегда остаются с вами.
 
@@ -102,59 +65,49 @@
 
 ### Хранение данных
 
-* 📝 Заметки: .json файлы в выбранной вами папке
-* ⚙️ Настройки: IndexedDB для запоминания пути к папке
-* 📂 Порядок заметок: Сохраняется в _order.json
+- 📝 Заметки: .json файлы в выбранной вами папке
+- ⚙️ Настройки: IndexedDB для запоминания пути к папке
+- 📂 Порядок заметок: Сохраняется в _order.json
+</details>
 
-## 🚀 Начало работы
+<details>
+<summary><strong>🚀 Начало работы</strong></summary>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Rocket.png" alt="Rocket" width="50" height="50" />
-</div>
-
-1. Скачайте файл `notes-offline.html`
+1. Скачайте файл <code>notes-offline.html</code>
 2. Откройте его в современном браузере (Chrome, Edge, Opera)
 3. Выберите папку, где будут храниться ваши заметки
 4. Готово! Наслаждайтесь полным контролем над своими данными
+</details>
 
-## 📜 Лицензия и использование
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Scroll.png" alt="Scroll" width="50" height="50" />
-</div>
+<details>
+<summary><strong>📜 Лицензия и использование</strong></summary>
 
 Этот проект распространяется по персональной лицензии.
 
 ✅ Вы можете:
-
-* Бесплатно использовать это приложение в личных, некоммерческих целях
+- Бесплатно использовать это приложение в личных, некоммерческих целях
 
 ❌ Вы не можете:
+- Распространять, продавать, модифицировать и использовать код в коммерческих проектах без письменного разрешения автора
+</details>
 
-* Распространять, продавать, модифицировать и использовать код в коммерческих проектах без письменного разрешения автора
+<details>
+<summary><strong>🎯 Основные функции</strong></summary>
 
-## 🎯 Основные функции
+- ✨ Создание и редактирование заметок
+- 📝 Поддержка Markdown
+- 🔍 Поиск по заметкам
+- 🏷️ Фильтрация по тегам
+- 📎 Прикрепление файлов
+- 🌓 Темная тема
+- 📤 Экспорт/импорт заметок
+- ↕️ Drag-and-drop сортировка
+- 📂 Работа с папками
+- ⚡ Быстрый доступ к недавним папкам
+</details>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bullseye.png" alt="Bullseye" width="50" height="50" />
-</div>
-
-* ✨ Создание и редактирование заметок
-* 📝 Поддержка Markdown
-* 🔍 Поиск по заметкам
-* 🏷️ Фильтрация по тегам
-* 📎 Прикрепление файлов
-* 🌓 Темная тема
-* 📤 Экспорт/импорт заметок
-* ↕️ Drag-and-drop сортировка
-* 📂 Работа с папками
-* ⚡ Быстрый доступ к недавним папкам
-
-## 🤝 Участие в разработке
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Handshake.png" alt="Handshake" width="50" height="50" />
-</div>
+<details>
+<summary><strong>🤝 Участие в разработке</strong></summary>
 
 Предложения и пул-реквесты приветствуются! Если у вас есть идеи по улучшению, пожалуйста, создайте Issue или Fork'ните репозиторий и сделайте свои изменения.
 
@@ -163,12 +116,10 @@
 3. Закоммитьте свои изменения (`git commit -m 'Add some AmazingFeature'`)
 4. Отправьте в удаленный репозиторий (`git push origin feature/AmazingFeature`)
 5. Откройте Пул-Реквест
+</details>
 
-## 📋 Часто задаваемые вопросы (FAQ)
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Question%20Mark.png" alt="Question Mark" width="50" height="50" />
-</div>
+<details>
+<summary><strong>📋 Часто задаваемые вопросы (FAQ)</strong></summary>
 
 **❓ Как это работает?**  
 Приложение использует File System Access API для работы с файлами на вашем компьютере. Все заметки сохраняются как отдельные JSON-файлы в выбранной вами папке.
@@ -181,12 +132,10 @@
 
 **❓ Как перенести заметки на другой компьютер?**  
 Просто скопируйте папку с заметками на другой компьютер и откройте приложение там. Все заметки и вложения будут доступны.
+</details>
 
-## 👨‍💻 Автор и поддержка
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Technologist.png" alt="Man Technologist" width="50" height="50" />
-</div>
+<details>
+<summary><strong>👨‍💻 Автор и поддержка</strong></summary>
 
 Автор: We1n (GitHub) | KarpovTatts (Telegram)
 
@@ -195,33 +144,22 @@
     <img src="https://img.shields.io/badge/Telegram-KarpovTatts-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"/>
   </a>
 </div>
+</details>
 
-## 💰 Поддержка проекта
+<details>
+<summary><strong>💰 Поддержка проекта</strong></summary>
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Money%20Bag.png" alt="Money Bag" width="50" height="50" />
-</div>
-
-<div align="center">
-  <a href="https://pay.cloudtips.ru/p/86838cfa" target="_blank">
-    <img src="https://img.shields.io/badge/Поддержать%20Проект-Донат-ff69b4?style=for-the-badge&logo=github-sponsors&logoColor=white&scale=1.5" alt="Поддержать проект" style="transform: scale(1.5);"/>
-  </a>
-</div>
+<a href="https://pay.cloudtips.ru/p/86838cfa" target="_blank">
+  <img src="https://img.shields.io/badge/Поддержать%20Проект-Донат-ff69b4?style=for-the-badge&logo=github-sponsors&logoColor=white&scale=1.5" alt="Поддержать проект" style="transform: scale(1.5);"/>
+</a>
 
 Если вам нравится проект, вы можете поддержать его развитие. Это мотивирует добавлять новые функции и улучшения!
+</details>
 
-## ⭐ Звезды и форки
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Glowing%20Star.png" alt="Glowing Star" width="50" height="50" />
-</div>
+<details>
+<summary><strong>⭐ Звезды и форки</strong></summary>
 
 Если вам понравился проект, не забудьте поставить звезду на GitHub! Это помогает проекту стать более заметным и привлечь больше пользователей.
 
-<div align="center">
-  <a href="#top">
-    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Up%20Arrow.png" alt="Up Arrow" width="50" height="50" />
-    <br/>
-    Наверх
-  </a>
-</div>
+<a href="#top">Наверх</a>
+</details>
